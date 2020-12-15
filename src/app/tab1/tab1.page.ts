@@ -6,16 +6,10 @@ import { Attribute } from "../bug-card/bug-card.component";
   styleUrls: ["tab1.page.scss"],
 })
 export class Tab1Page {
-  attribute?: Attribute;
+  attribute?: Attribute = {
+    name: "colour",
+    id: "123456",
+  };
 
   constructor() {}
-
-  ngOnInit() {
-    setTimeout(() => {
-      this.attribute = {
-        name: "colour",
-        id: "123456",
-      };
-    }, 400);
-  }
 }

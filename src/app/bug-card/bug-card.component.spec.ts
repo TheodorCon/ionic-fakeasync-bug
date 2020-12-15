@@ -1,26 +1,15 @@
-import { Component } from "@angular/core";
 import {
   async,
   ComponentFixture,
   fakeAsync,
-
+  flush,
   TestBed,
-  tick
-} from "@angular/core/testing";
-import { IonicModule } from "@ionic/angular";
-import { Attribute, BugCardComponent } from "./bug-card.component";
+} from '@angular/core/testing';
+import { IonicModule } from '@ionic/angular';
+import { BugCardComponent } from './bug-card.component';
 
-@Component({
-  template: ` <app-attribute-card
-    [attribute]="attribute"
-  ></app-attribute-card>`,
-})
-class TestHostComponent {
-  attribute?: Attribute;
-}
-
-describe("BugCardComponent", () => {
-  let component: TestHostComponent;
+describe('BugCardComponent', () => {
+  let component: BugCardComponent;
   let fixture: ComponentFixture<BugCardComponent>;
 
   beforeEach(async(() => {
@@ -31,20 +20,12 @@ describe("BugCardComponent", () => {
 
     fixture = TestBed.createComponent(BugCardComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   }));
 
-  it("should create", () => {
-    expect(component).toBeTruthy();
-  });
+  fit('breaks the code', fakeAsync(() => {
+    component.attribute = {name: 'colour', id: '123123'};
+    fixture.detectChanges(); // calling detectChanges causes ChunkLoadError
 
-  fit("breaks the code", fakeAsync(async () => {
-    component.attribute = { name: "colour", id: "123123" };
-    // fixture.detectChanges();
-    await fixture.whenStable();
-
-    // console.log(flush());
-    tick(1000);
-    expect(true).toBeTrue();
+    expect(flush()).toEqual(0); // we haven't started any timers, so flush() should return zero
   }));
 });
